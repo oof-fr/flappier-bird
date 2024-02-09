@@ -52,7 +52,7 @@
 
   let pipes = [];
   const pipeWidth = 50;
-  const pipeGap = 200;
+  const minPipeGap = 50; // Minimum gap between pipes
   const pipeSpeed = 3;
   let score = 0;
 
@@ -63,74 +63,4 @@
 
     for (const pipe of pipes) {
       ctx.fillStyle = 'green';
-      ctx.fillRect(pipe.x, 0, pipeWidth, pipe.height);
-      ctx.fillRect(pipe.x, pipe.height + pipeGap, pipeWidth, canvas.height - pipe.height - pipeGap);
-    }
-
-    ctx.fillStyle = 'black';
-    ctx.font = '30px Arial';
-    ctx.fillText(`Score: ${score}`, 10, 30);
-  }
-
-  function update() {
-    bird.update();
-
-    for (const pipe of pipes) {
-      pipe.x -= pipeSpeed;
-
-      if (bird.x + bird.radius > pipe.x && bird.x - bird.radius < pipe.x + pipeWidth &&
-          (bird.y - bird.radius < pipe.height || bird.y + bird.radius > pipe.height + pipeGap)) {
-        gameOver();
-        return;
-      }
-
-      if (bird.x === pipe.x + pipeWidth) {
-        score++;
-      }
-    }
-
-    pipes.forEach((pipe, index) => {
-      if (pipe.x + pipeWidth < 0) {
-        pipes.splice(index, 1);
-      }
-    });
-
-    if (frame % 100 === 0) {
-      createPipe();
-    }
-
-    frame++;
-
-    draw();
-    requestAnimationFrame(update);
-  }
-
-  function gameOver() {
-    alert(`Game Over! Your score: ${score}`);
-    document.location.reload();
-  }
-
-  let frame = 0;
-  function createPipe() {
-    const pipeHeight = Math.random() * (canvas.height - pipeGap);
-    pipes.push({
-      x: canvas.width,
-      height: pipeHeight
-    });
-  }
-
-  document.addEventListener('click', function() {
-    bird.flap();
-  });
-
-  document.addEventListener('keydown', function(event) {
-    if (event.key === ' ' || event.key === 'ArrowUp') {
-      bird.flap();
-    }
-  });
-
-  createPipe();
-  update();
-</script>
-</body>
-</html>
+      ctx.fillRect(pipe.x,
